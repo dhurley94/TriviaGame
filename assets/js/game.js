@@ -38,14 +38,14 @@ $(document).ready(function() {
         }
       });*/
       $.getJSON('https://opentdb.com/api.php?amount=' + String(loop) + '&category=18&difficulty=easy&type=multiple', function(data) {
-          console.log("from getQuestions" + data.results);
+          console.log(data.results);
           return data.results;
           //console.log(game.questions[0].question);
       });
     },
     displayQuestion: function() {
-      console.log("displayQ" + this)
-      console.log("displayQ" + this.questions[0].question);
+      console.log(this)
+      console.log(this.questions[0].question);
       //if (game.isPlaying) {
       //  console.log(game.questions[game.questionPos].question)
       //}
