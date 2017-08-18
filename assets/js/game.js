@@ -11,6 +11,7 @@ $(document).ready(function() {
     wrong: 0,
     time: 30000,
     questions: [],
+
     // start game
     start: function() {
       game.isPlaying = true;
@@ -19,40 +20,47 @@ $(document).ready(function() {
       console.log("User selected " + game.questionAmt + " questions and has " + game.time / 1000 + " seconds to complete.");
       $(".game").show();
       $(".init").hide();
-      game.getQuestions(game.questionAmt);
+      game.questions.push(game.getQuestions(game.questionAmt));
       game.displayQuestion();
-    },
-    // game reset function
-    reset: function() {
-      game.isPlaying = false;
-      game.questions = 10;
-      game.correct = 0;
-      game.wrong = 0;
-      $(".game").hide();
-      $(".init").show();
     },
     getQuestions: function(loop) {
       /*
       * pulls amount of questions
       * based on user input on first page
       * assigns it to local game variable
-      */
+
       $.ajax({
+        dataType: "json",
         url: 'https://opentdb.com/api.php?amount=' + String(loop) + '&category=18&difficulty=easy&type=multiple',
         type: 'GET',
         success: function(data) {
           game.questions = data.results;
         }
+      });*/
+      $.getJSON('https://opentdb.com/api.php?amount=' + String(loop) + '&category=18&difficulty=easy&type=multiple', function(data) {
+          console.log("from getQuestions" + data.results);
+          return data.results;
+          //console.log(game.questions[0].question);
       });
     },
     displayQuestion: function() {
-      console.log(this);
-      console.log(game.questionAmt);
+      console.log("displayQ" + this)
+      console.log("displayQ" + this.questions[0].question);
       //if (game.isPlaying) {
       //  console.log(game.questions[game.questionPos].question)
       //}
       //i++;
-    }
+    },
+    // game reset function
+    /*reset: function() {
+      isPlaying: false,
+      questionAmt: 10,
+      questionPos: 0,
+      correct: 0,
+      wrong: 0,
+      time: 30000,
+      questions: []
+    }*/
   }
 
   if (game.isPlaying == false) {
