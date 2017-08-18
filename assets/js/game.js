@@ -47,8 +47,7 @@ $(document).ready(function() {
     },
     displayQuestion: function() {
       console.log(this);
-      console.log(this.questionAmt);
-      console.log(this.questions[0].question)
+      console.log(game.questionAmt);
       //if (game.isPlaying) {
       //  console.log(game.questions[game.questionPos].question)
       //}
