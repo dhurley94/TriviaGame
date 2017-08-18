@@ -38,8 +38,8 @@ $(document).ready(function() {
         }
       });*/
       $.getJSON('https://opentdb.com/api.php?amount=' + String(loop) + '&category=18&difficulty=easy&type=multiple', function(data) {
-          console.log(data.results);
-          return data.results;
+          game.questions = data.results;
+          console.log(game.questions);
           //console.log(game.questions[0].question);
       });
     },
