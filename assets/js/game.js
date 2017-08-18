@@ -20,7 +20,7 @@ $(document).ready(function() {
       console.log("User selected " + game.questionAmt + " questions and has " + game.time / 1000 + " seconds to complete.");
       $(".game").show();
       $(".init").hide();
-      game.questions.push(game.getQuestions(game.questionAmt));
+      game.getQuestions(game.questionAmt);
       game.displayQuestion();
     },
     getQuestions: function(loop) {
@@ -40,17 +40,12 @@ $(document).ready(function() {
       $.getJSON('https://opentdb.com/api.php?amount=' + String(loop) + '&category=18&difficulty=easy&type=multiple', function(data) {
           game.questions = data.results;
           console.log(game.questions);
-          //console.log(game.questions[0].question);
       });
     },
     displayQuestion: function() {
       console.log(this)
-      console.log(this.questions[0].question);
-      //if (game.isPlaying) {
-      //  console.log(game.questions[game.questionPos].question)
-      //}
-      //i++;
-    },
+      console.log(game.questions);
+    }
     // game reset function
     /*reset: function() {
       isPlaying: false,
