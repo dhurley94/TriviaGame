@@ -3,23 +3,20 @@ $(document).ready(function() {
 // https://opentdb.com/api_config.php
 // https://opentdb.com/api.php?amount=10&category=18&type=multiple
 
-
   function generateQuestions(loop) {
     /*
     * pulls 'loop' amount of questions
     * based on user input on first page
     */
-    for (var i = 0; i < loop; i++) {
-      $.ajax({
-        url: 'https://opentdb.com/api.php?amount=1&category=18&difficulty=easy&type=multiple',
-        type: 'GET',
-        success: function(data) {
-          $.each(data, function(i, item){
-            console.log(item[0]);
-          })
-        }
-      });
-    }
+    $.ajax({
+      url: 'https://opentdb.com/api.php?amount=' + String(loop) + '&category=18&difficulty=easy&type=multiple',
+      type: 'GET',
+      success: function(data) {
+        $.each(data, function(i, item){
+          console.log(item);
+        });
+      }
+    });
   }
 
   var game = {
@@ -31,7 +28,11 @@ $(document).ready(function() {
     // get number of questions
     start: function() {
       game.isPlaying = true;
-      console.log(game.questionAmt);
+      game.questionAmt = $("#initNum").val();
+      game.questions = generateQuestions(game.questionAmt);
+      console.log(game.questions);
+      $(".game").show();
+      $(".init").hide();
     },
     // game reset function
     reset: function() {
@@ -50,10 +51,7 @@ $(document).ready(function() {
   }
 
   $("#start").on('click', function() {
-    game.questionAmt = $("#initNum").val();
-    console.log(game.questionAmt);
-    $(".game").show();
-    $(".init").hide();
+    game.start();
   });
 
 });
