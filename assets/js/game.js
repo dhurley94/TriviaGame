@@ -1,6 +1,7 @@
 $(document).ready(function() {
 
 // https://opentdb.com/api_config.php
+// https://opentdb.com/api.php?amount=10&category=18&type=multiple
 
   var game = {
     isPlaying: false,
