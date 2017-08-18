@@ -10,7 +10,7 @@ $(document).ready(function() {
     correct: 0,
     wrong: 0,
     time: 30000,
-    questions: [],
+    questionArray: [],
 
     // start game
     start: function() {
@@ -21,30 +21,22 @@ $(document).ready(function() {
       $(".game").show();
       $(".init").hide();
       game.getQuestions(game.questionAmt);
-      game.displayQuestion();
+      game.displayQuestions();
     },
     getQuestions: function(loop) {
       /*
       * pulls amount of questions
       * based on user input on first page
       * assigns it to local game variable
-
-      $.ajax({
-        dataType: "json",
-        url: 'https://opentdb.com/api.php?amount=' + String(loop) + '&category=18&difficulty=easy&type=multiple',
-        type: 'GET',
-        success: function(data) {
-          game.questions = data.results;
-        }
-      });*/
+      */
       $.getJSON('https://opentdb.com/api.php?amount=' + String(loop) + '&category=18&difficulty=easy&type=multiple', function(data) {
-          game.questions = data.results;
-          console.log(game.questions);
+          game.questionArray = data.results;
+          console.log(game.questionArray)
       });
     },
-    displayQuestion: function() {
-      console.log(this)
-      console.log(game.questions);
+    displayQuestions: function() {
+      console.log(this);
+      console.log(game.questionArray);
     }
     // game reset function
     /*reset: function() {
