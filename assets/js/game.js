@@ -38,23 +38,35 @@ $(document).ready(function() {
       // set interval for amount of time rather than for loop
       // increment questionPos to keep track of position
       //
-      setInterval(function() {
-        $(".timer").html(parseInt((game.time / 1000) / 60) + " minutes remaining.");
-        $(".query").html(game.questions[game.questionPos].question)
-        console.log(game.questions[game.questionPos].question);
+      $(".timer").html(parseInt((game.time / 1000) / 60) + " minutes remaining.");
+      $(".query").html(game.questions[game.questionPos].question)
+      console.log(game.questions[game.questionPos].question);
 
-        var answersArr = game.questions[game.questionPos].incorrect_answers;
-        answersArr.push(game.questions[game.questionPos].correct_answer);
-        console.log(answersArr);
+      var answersArr = game.questions[game.questionPos].incorrect_answers;
+      answersArr.push(game.questions[game.questionPos].correct_answer);
+      console.log(answersArr);
 
-        $('.custom-control-description1').html(answersArr[0]);
-        $('.custom-control-description2').html(answersArr[1]);
-        $('.custom-control-description3').html(answersArr[2]);
-        $('.custom-control-description4').html(answersArr[3]);
+      $("#radioStacked1").prop('value', answersArr[0]);
+      $("#radioStacked2").prop('value', answersArr[1]);
+      $("#radioStacked3").prop('value', answersArr[2]);
+      $("#radioStacked4").prop('value', answersArr[3]);
+      $('.custom-control-description1').html(answersArr[0]);
+      $('.custom-control-description2').html(answersArr[1]);
+      $('.custom-control-description3').html(answersArr[2]);
+      $('.custom-control-description4').html(answersArr[3]);
 
-        game.questionPos++;
-      }, 30000);
-    }
+      $("#submit").on("click", function(e) {
+        if ($("input[name='radio-stacked']:checked").val() == game.questions[game.questionPos].correct_answer) {
+          console.log("Right!")
+        } else {
+          console.log("Wrong!")
+        }
+        //game.questionPos++;
+      });
+    }/*
+    questionTimer: function() {
+      setTimeout(, 1000 * 5);
+    }*/
   }
 
   if (game.isPlaying == false) {
