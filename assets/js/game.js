@@ -22,7 +22,6 @@ $(document).ready(function() {
       $(".game").show();
       $(".init").hide();
       game.getQuestions(game.questionAmt);
-      //game.displayQuestion();
     },
     getQuestions: function(loop) {
       /*
@@ -32,21 +31,29 @@ $(document).ready(function() {
       */
       $.getJSON('https://opentdb.com/api.php?amount=' + String(loop) + '&category=18&difficulty=easy&type=multiple', function(data) {
           game.questions = data.results;
+          game.displayQuestion();
       });
     },
     displayQuestion: function() {
-      console.log(game.questions)
       // set interval for amount of time rather than for loop
       // increment questionPos to keep track of position
       //
-      for (var i = 1; i <= game.questionAmt; i++) {
-        var answersArr = game.questions[i].incorrect_answers;
-        answersArr.push(game.questions[i].correct_answer);
+      setInterval(function() {
+        $(".timer").html(parseInt((game.time / 1000) / 60) + " minutes remaining.");
+        $(".query").html(game.questions[game.questionPos].question)
+        console.log(game.questions[game.questionPos].question);
+
+        var answersArr = game.questions[game.questionPos].incorrect_answers;
+        answersArr.push(game.questions[game.questionPos].correct_answer);
         console.log(answersArr);
-        $(".query").text(game.questions[i].question)
-        answersArr.forEach()
-        //$(".custom-control-description").text
-      }
+
+        $('.custom-control-description1').html(answersArr[0]);
+        $('.custom-control-description2').html(answersArr[1]);
+        $('.custom-control-description3').html(answersArr[2]);
+        $('.custom-control-description4').html(answersArr[3]);
+
+        game.questionPos++;
+      }, 30000);
     }
   }
 
@@ -55,9 +62,9 @@ $(document).ready(function() {
     $(".init").show();
   }
 
+
   $("#start").on('click', function() {
     game.start();
-
   });
 
 });
