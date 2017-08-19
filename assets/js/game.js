@@ -39,7 +39,8 @@ $(document).ready(function() {
       // set interval for amount of time rather than for loop
       // increment questionPos to keep track of position
       //
-      setTimeout(game.timesUp, 30000);
+      var thirty = 30000;
+      setTimeout(game.timesUp, thirty);
       game.updateScore()
       if (game.questionPos + 1 >= game.questionAmt) {
         game.completed();
