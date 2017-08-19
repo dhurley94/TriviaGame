@@ -22,7 +22,7 @@ $(document).ready(function() {
       $(".game").show();
       $(".init").hide();
       game.getQuestions(game.questionAmt);
-      game.displayQuestion();
+      //game.displayQuestion();
     },
     getQuestions: function(loop) {
       /*
@@ -31,13 +31,22 @@ $(document).ready(function() {
       * assigns it to local game variable
       */
       $.getJSON('https://opentdb.com/api.php?amount=' + String(loop) + '&category=18&difficulty=easy&type=multiple', function(data) {
-          game.questions.push(data.results);
+          game.questions = data.results;
       });
     },
     displayQuestion: function() {
-      setTimeout(function() {
-        console.log(game.questions)
-      }, 1000);
+      console.log(game.questions)
+      // set interval for amount of time rather than for loop
+      // increment questionPos to keep track of position
+      //
+      for (var i = 1; i <= game.questionAmt; i++) {
+        var answersArr = game.questions[i].incorrect_answers;
+        answersArr.push(game.questions[i].correct_answer);
+        console.log(answersArr);
+        $(".query").text(game.questions[i].question)
+        answersArr.forEach()
+        //$(".custom-control-description").text
+      }
     }
   }
 
@@ -48,6 +57,7 @@ $(document).ready(function() {
 
   $("#start").on('click', function() {
     game.start();
+
   });
 
 });
