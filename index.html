@@ -20,22 +20,22 @@
           <label class="custom-control custom-radio">
             <input id="radioStacked1" name="radio-stacked" type="radio" class="custom-control-input">
             <span class="custom-control-indicator"></span>
-            <span class="custom-control-description1">Toggle this custom radio</span>
+            <span class="custom-control-description1"></span>
           </label>
           <label class="custom-control custom-radio">
             <input id="radioStacked2" name="radio-stacked" type="radio" class="custom-control-input">
             <span class="custom-control-indicator"></span>
-            <span class="custom-control-description2">Or toggle this other custom radio</span>
+            <span class="custom-control-description2"></span>
           </label>
           <label class="custom-control custom-radio">
             <input id="radioStacked3" name="radio-stacked" type="radio" class="custom-control-input">
             <span class="custom-control-indicator"></span>
-            <span class="custom-control-description3">Toggle this custom radio</span>
+            <span class="custom-control-description3"></span>
           </label>
           <label class="custom-control custom-radio">
             <input id="radioStacked4" name="radio-stacked" type="radio" class="custom-control-input">
             <span class="custom-control-indicator"></span>
-            <span class="custom-control-description4">Or toggle this other custom radio</span>
+            <span class="custom-control-description4"></span>
           </label>
         </div>
         <hr class="my-4">
@@ -45,18 +45,34 @@
       </form>
       <p class="timer">Timer remaining: <span></span></p>
       <hr class="my-4">
+      <p>Correct: <span id="correct"></span></p>
+      <p>Wrong: <span id="wrong"></span></p>
+
     </div>
 
     <div class="jumbotron vertical-center init">
       <center>
         <h1 class="display-2">Computer Trivia!</h1>
-        <h4>input number of questions you would like to answer</h1>
+        <h4>input number of questions you would like to answer</h4>
         <form>
           <div class="form-group">
             <label>Select a number between 10 and 25!</label>
             <input id="initNum" type="number" class="form-control" value="10" min="10" max="25">
             <br>
             <buttton id="start" class="btn btn-primary btn-lg btn-block">Start</button>
+          </div>
+        </form>
+      </center>
+    </div>
+
+    <div class="jumbotron vertical-center startover">
+      <center>
+        <h1 class="display-2">Computer Trivia!</h1>
+        <h4>Would you like to play again?</h4>
+        <form>
+          <div class="form-group">
+            <button id="startover" class="btn btn-primary btn-lg btn-block">Yes</button>
+            <button id="nope" class="btn btn-primary btn-lg btn-block">Nope, game sucks.</button>
           </div>
         </form>
       </center>
