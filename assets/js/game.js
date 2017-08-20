@@ -10,7 +10,6 @@ $(document).ready(function() {
     "questionPos": 0,
     "correct": 0,
     "wrong": 0,
-    "thirty": 30000,
     "time": 30000,
     "questions": [],
     "answersArr": [],
@@ -39,12 +38,17 @@ $(document).ready(function() {
     },
     displayQuestion: function() {
       game.updateScore();
+
+      // check if questions answered equals available questions
+      // done if true
       if (game.questionPos + 1 == game.questionAmt) {
         game.completed();
       }
+
       game.answersArr = game.questions[game.questionPos].incorrect_answers;
       game.answersArr.push(game.questions[game.questionPos].correct_answer);
       console.log(game.answersArr);
+      console.log("Answer: " + game.questions[game.questionPos].correct_answer)
 
       $(".timer").html(parseInt((game.time / 1000) / 60) + " minutes remaining.");
       $(".query").html(game.questions[game.questionPos].question)
@@ -71,6 +75,17 @@ $(document).ready(function() {
       $("#wrong").text(game.wrong);
       $("#correct").text(game.correct);
     },
+    resetGame: function() {
+      game.isPlaying  false;
+      game.hasQuery = false;
+      game.questionAmt = 10;
+      game.questionPos = 0;
+      game.correct = 0
+      game.wrong = 0;
+      game.time = 30000;
+      game.questions = [];
+      game.answersArr = [];
+    },
     completed: function() {
       game.isPlaying = false;
       game.hasQuery = false;
@@ -90,9 +105,11 @@ $(document).ready(function() {
     game.start();
   });
   $("#startover").on('click', function() {
+    game.resetGame();
     game.start();
   });
   $("#nope").on('click', function() {
+    game.resetGame();
     $(".container").hide();
     //window.location.replace("https://google.com");
   });
@@ -101,7 +118,9 @@ $(document).ready(function() {
       game.correct++;
     } else if ($("input[name='radio-stacked']:checked").val() != game.questions[game.questionPos].correct_answer) {
       game.wrong++;
-    }
+    }/* else if () {
+      //TODO implement timer loss
+    }*/
     game.answersArr = [];
     game.questionPos++;
     game.displayQuestion();
