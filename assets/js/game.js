@@ -76,7 +76,7 @@ $(document).ready(function() {
       $("#correct").text(game.correct);
     },
     resetGame: function() {
-      game.isPlaying  false;
+      game.isPlaying = false;
       game.hasQuery = false;
       game.questionAmt = 10;
       game.questionPos = 0;
