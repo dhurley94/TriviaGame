@@ -10,8 +10,10 @@ $(document).ready(function() {
     "questionPos": 0,
     "correct": 0,
     "wrong": 0,
+    "thirty": 30000,
     "time": 30000,
     "questions": [],
+    "answersArr": [],
 
     // start game
     start: function() {
@@ -36,63 +38,47 @@ $(document).ready(function() {
       });
     },
     displayQuestion: function() {
-      // set interval for amount of time rather than for loop
-      // increment questionPos to keep track of position
-      //
-      var thirty = 30000;
-      setTimeout(game.timesUp, thirty);
-      game.updateScore()
-      if (game.questionPos + 1 >= game.questionAmt) {
+      game.updateScore();
+      if (game.questionPos + 1 == game.questionAmt) {
         game.completed();
       }
-      console.log(game.questionPos);
+      game.answersArr = game.questions[game.questionPos].incorrect_answers;
+      game.answersArr.push(game.questions[game.questionPos].correct_answer);
+      console.log(game.answersArr);
+
       $(".timer").html(parseInt((game.time / 1000) / 60) + " minutes remaining.");
       $(".query").html(game.questions[game.questionPos].question)
-      console.log(game.questions[game.questionPos].question);
+      $("#radioStacked1").prop('value', game.answersArr[0]);
+      $("#radioStacked2").prop('value', game.answersArr[1]);
+      $("#radioStacked3").prop('value', game.answersArr[2]);
+      $("#radioStacked4").prop('value', game.answersArr[3]);
+      $('.custom-control-description1').html(game.answersArr[0]);
+      $('.custom-control-description2').html(game.answersArr[1]);
+      $('.custom-control-description3').html(game.answersArr[2]);
+      $('.custom-control-description4').html(game.answersArr[3]);
 
-      var answersArr = game.questions[game.questionPos].incorrect_answers;
-      answersArr.push(game.questions[game.questionPos].correct_answer);
-      console.log(answersArr);
+      console.log(game.questionPos + " : " +  game.questions[game.questionPos].question);
+      console.log("Correct: " + game.correct + "  Wrong: " + game.wrong);
 
-      $("#radioStacked1").prop('value', answersArr[0]);
-      $("#radioStacked2").prop('value', answersArr[1]);
-      $("#radioStacked3").prop('value', answersArr[2]);
-      $("#radioStacked4").prop('value', answersArr[3]);
-      $('.custom-control-description1').html(answersArr[0]);
-      $('.custom-control-description2').html(answersArr[1]);
-      $('.custom-control-description3').html(answersArr[2]);
-      $('.custom-control-description4').html(answersArr[3]);
-
-      $("#submit").on("click", function() {
-        if ($("input[name='radio-stacked']:checked").val() == game.questions[game.questionPos].correct_answer) {
-          game.correct++;
-          game.questionPos++
-          game.displayQuestion();
-        } else { //if ($("input[name='radio-stacked']:checked").val() != game.questions[game.questionPos].correct_answer) {
-          game.wrong++;
-          game.questionPos++;
-          game.displayQuestion();
-        }
-      });
-      },
-      timesUp: function() {
-        //game.time -= 30000;
-        game.wrong++;
-        game.questionPos++
-        game.displayQuestion();
-      },
-      updateScore: function() {
-        $("#wrong").text(game.wrong);
-        $("#correct").text(game.correct);
-      },
-      completed: function() {
-        game.isPlaying = false;
-        game.hasQuery = false;
-        $(".game").hide();
-        $(".init").hide();
-        $(".startover").show();
-      }
+    },
+    timesUp: function() {
+      //game.time -= 30000;
+      game.wrong++;
+      game.questionPos++
+      game.displayQuestion();
+    },
+    updateScore: function() {
+      $("#wrong").text(game.wrong);
+      $("#correct").text(game.correct);
+    },
+    completed: function() {
+      game.isPlaying = false;
+      game.hasQuery = false;
+      $(".game").hide();
+      $(".init").hide();
+      $(".startover").show();
     }
+  }
 
   if (game.isPlaying == false) {
     $(".game").hide();
@@ -108,7 +94,16 @@ $(document).ready(function() {
   });
   $("#nope").on('click', function() {
     $(".container").hide();
-    window.location.replace("https://google.com");
+    //window.location.replace("https://google.com");
   });
-
+  $("#submit").on("click", function() {
+    if ($("input[name='radio-stacked']:checked").val() == game.questions[game.questionPos].correct_answer) {
+      game.correct++;
+    } else if ($("input[name='radio-stacked']:checked").val() != game.questions[game.questionPos].correct_answer) {
+      game.wrong++;
+    }
+    game.answersArr = [];
+    game.questionPos++;
+    game.displayQuestion();
+  });
 });
