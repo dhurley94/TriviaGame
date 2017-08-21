@@ -3,6 +3,9 @@ $(document).ready(function() {
 // https://opentdb.com/api_config.php
 // https://opentdb.com/api.php?amount=10&category=18&type=multiple
 
+  var intervalId;
+  var timeoutId;
+
   var game = {
     // declare variables
     "isPlaying": false,
@@ -14,6 +17,8 @@ $(document).ready(function() {
     "time": 30000,
     "questions": [],
     "answersArr": [],
+    "timeOutDOM": 29,
+    "outOfTime": 0,
 
     // start game
     start: function() {
@@ -65,6 +70,7 @@ $(document).ready(function() {
       console.log("Answer: " + game.questions[game.questionPos].correct_answer)
 
       // update DOM
+      $(".remain").text((game.questionPos + 1) + " / " + game.questionAmt);
       $(".query").html(game.questions[game.questionPos].question)
       $("#radioStacked1").prop('value', game.answersArr[0]);
       $("#radioStacked2").prop('value', game.answersArr[1]);
@@ -77,9 +83,29 @@ $(document).ready(function() {
 
       console.log("Correct: " + game.correct + "  Wrong: " + game.wrong);
 
+      intervalId = setInterval(game.updateTimer, 1000);
+      timeoutId = setTimeout(game.timesUp, 30000);
     },
     timesUp: function() {
-      //TODO update DOM with current time. once timeout is met display .startover
+      console.log("Ranout of time!");
+      // clear interval and timeout for time tracking
+      clearInterval(intervalId);
+      clearTimeout(timeoutId);
+      // increment failed to answer
+      game.wrong++;
+      // reset DOM timer
+      game.timeOutDOM = 29;
+      game.outOfTime++;
+      // reset question array
+      game.answersArr = [];
+      // increment question position
+      game.questionPos++;
+      // show next question
+      game.displayQuestion();
+    },
+    updateTimer: function() {
+      $(".timer").text(game.timeOutDOM);
+      game.timeOutDOM--;
     },
     updateScore: function() {
       // update DOM w/ scores
@@ -99,11 +125,14 @@ $(document).ready(function() {
       game.answersArr = [];
     },
     completed: function() {
+      // clear interval and timeout for time tracking
+      clearInterval(intervalId);
+      clearTimeout(timeoutId);
       // display startover
       $(".game").hide();
       $(".init").hide();
       $(".startover").show();
-      $("#finScore").html("<h3>You got " + game.correct + " of " + (game.questions.length) +  " correct!</h3>");
+      $("#finScore").html("<h3>You got " + game.correct + " of " + (game.questions.length) +  " correct!</h3><p>You ran out of time " + game.outOfTime + " times!</p>");
     },
     timeConverter: function(t) {
 
@@ -152,12 +181,17 @@ $(document).ready(function() {
     game.start();
   });
   $("#nope").on('click', function() {
-    game.isPlaying = true;
-    window.location.href = "http://google.com";
+    $(location).attr('href', 'http://google.com');
   });
   $("#submit").on("click", function() {
     /*
+    * Clear Timer
     */
+    clearInterval(intervalId);
+    clearTimeout(timeoutId);
+    // reset DOM timer
+    game.timeOutDOM = 29;
+    // Check input
     if ($("input[name='radio-stacked']:checked").val() == game.questions[game.questionPos].correct_answer) {
       game.correct++;
       /*$(".game").hide();

@@ -22,9 +22,11 @@
 
   <div class="container">
     <div class="jumbotron vertical-center game">
-      <h1 id="title" class="display-3">Silicon Savior</h1>
+      <h1 id="title" class="display-3 text-center">Silicon Savior</h1>
+      <p style="float: left; display: inline;" class="text-center">Question: <span style="font-weight: bolder;" class="remain"></span></p>
+      <p style="float: right; display: inline;" class="text-center">Time Left! <span style="font-weight: bolder;" class="timer"></span></p>
+      <hr style="clear: both;" class="my-4">
       <p class="lead query"></p>
-      <hr class="my-4">
       <form>
         <div class="custom-controls-stacked">
           <label class="custom-control custom-radio">
@@ -53,10 +55,9 @@
           <button type="button" class="btn btn-primary btn-lg btn-block" id="submit">Submit</button>
         </p>
       </form>
-      <p class="timer">Timer remaining: <span></span></p>
       <hr class="my-4">
-      <p style="display: inline">Correct: <span id="correct"></span></p>
-      <p style="display: inline; float: right;">Wrong: <span id="wrong"></span></p>
+      <p style="display: inline">Correct: <span style="font-weight: bolder;" id="correct"></span></p>
+      <p style="display: inline; float: right;">Wrong: <span style="font-weight: bolder;" id="wrong"></span></p>
 
     </div>
 
@@ -83,6 +84,7 @@
         <form>
           <div class="form-group">
             <button id="startover" class="btn btn-primary btn-lg btn-block">Yes</button>
+            <br>
             <button id="nope" class="btn btn-primary btn-lg btn-block">Nope, game sucks.</button>
           </div>
         </form>
