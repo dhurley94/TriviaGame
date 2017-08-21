@@ -18,12 +18,15 @@ $(document).ready(function() {
     // start game
     start: function() {
       game.isPlaying = true;
+      // get value in form
       game.questionAmt = $("#initNum").val();
+      // each question gets 30 seconds
       game.time *= game.questionAmt;
       console.log("User selected " + game.questionAmt + " questions and has " + game.time / 1000 + " seconds to complete.");
       $(".game").show();
       $(".init").hide();
       $(".startover").hide();
+      // get questions based on user input from form
       game.getQuestions(game.questionAmt);
     },
     getQuestions: function(loop) {
@@ -42,20 +45,26 @@ $(document).ready(function() {
       // update DOM
       game.updateScore();
 
+      // log postion vs array question length
+      console.log(game.questionPos + " : " + game.questions.length)
+
       // check if questions answered equals available questions
       // done if true
-      console.log(game.questionPos + " : " + game.questions.length)
       if (game.questionPos == game.questions.length) {
         game.completed();
       }
 
       console.log(game.questionPos + " : " +  game.questions[game.questionPos].question);
+      // set incorrect_answers and answer to one array
       game.answersArr = game.questions[game.questionPos].incorrect_answers;
       game.answersArr.push(game.questions[game.questionPos].correct_answer);
+      // shuffle order
       game.shuffle(game.answersArr);
+
       console.log(game.answersArr);
       console.log("Answer: " + game.questions[game.questionPos].correct_answer)
 
+      // update DOM
       $(".query").html(game.questions[game.questionPos].question)
       $("#radioStacked1").prop('value', game.answersArr[0]);
       $("#radioStacked2").prop('value', game.answersArr[1]);
@@ -68,8 +77,6 @@ $(document).ready(function() {
 
       console.log("Correct: " + game.correct + "  Wrong: " + game.wrong);
 
-
-      //setTimeout(game.timesUp(), 30000);
     },
     timesUp: function() {
       //TODO update DOM with current time. once timeout is met display .startover
@@ -115,8 +122,8 @@ $(document).ready(function() {
         }
 
         return minutes + ":" + seconds;
-      },
-      shuffle: function(a) {
+    },
+    shuffle: function(a) {
         /**
         * Shuffles array in place.
         */
@@ -128,8 +135,9 @@ $(document).ready(function() {
           a[j] = x;
         }
       }
-    }
+  }
 
+  //
   if (game.isPlaying == false) {
     $(".game").hide();
     $(".init").show();
@@ -144,6 +152,7 @@ $(document).ready(function() {
     game.start();
   });
   $("#nope").on('click', function() {
+    game.isPlaying = true;
     window.location.href = "http://google.com";
   });
   $("#submit").on("click", function() {
