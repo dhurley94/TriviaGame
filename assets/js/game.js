@@ -3,6 +3,7 @@ $(document).ready(function() {
 // https://opentdb.com/api_config.php
 // https://opentdb.com/api.php?amount=10&category=18&type=multiple
 
+  // set timeout and intervalids
   var intervalId;
   var timeoutId;
 
@@ -40,7 +41,6 @@ $(document).ready(function() {
       * based on user input on first page
       * assigns it to local game variable
       */
-      $(".timer").html(game.timeConverter(game.time / 1000) + " minutes remaining.");
       $.getJSON('https://opentdb.com/api.php?amount=' + String(loop) + '&category=18&difficulty=medium&type=multiple', function(data) {
           game.questions = data.results;
           game.displayQuestion();
@@ -134,24 +134,6 @@ $(document).ready(function() {
       $(".startover").show();
       $("#finScore").html("<h3>You got " + game.correct + " of " + (game.questions.length) +  " correct!</h3><p>You ran out of time " + game.outOfTime + " times!</p>");
     },
-    timeConverter: function(t) {
-
-        var minutes = Math.floor(t / 60);
-        var seconds = t - (minutes * 60);
-
-        if (seconds < 10) {
-          seconds = "0" + seconds;
-        }
-
-        if (minutes === 0) {
-          minutes = "00";
-        }
-        else if (minutes < 10) {
-          minutes = "0" + minutes;
-        }
-
-        return minutes + ":" + seconds;
-    },
     shuffle: function(a) {
         /**
         * Shuffles array in place.
@@ -212,4 +194,5 @@ $(document).ready(function() {
     // show next question
     game.displayQuestion();
   });
+
 });
