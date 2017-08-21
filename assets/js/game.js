@@ -148,7 +148,7 @@ $(document).ready(function() {
       }
   }
 
-  //
+  // Check if game is started
   if (game.isPlaying == false) {
     $(".game").hide();
     $(".init").show();
