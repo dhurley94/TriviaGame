@@ -3,12 +3,6 @@ $(document).ready(function() {
 // https://opentdb.com/api_config.php
 // https://opentdb.com/api.php?amount=10&category=18&type=multiple
 
-  //  Variable that will hold our setInterval that runs the stopwatch
-  var intervalId;
-
-  //prevents the clock from being sped up unnecessarily
-  var timerRunning = false;
-
   var game = {
     // declare variables
     "isPlaying": false,
@@ -38,26 +32,30 @@ $(document).ready(function() {
       * based on user input on first page
       * assigns it to local game variable
       */
-      $.getJSON('https://opentdb.com/api.php?amount=' + String(loop) + '&category=18&difficulty=easy&type=multiple', function(data) {
+      $(".timer").html(game.timeConverter(game.time / 1000) + " minutes remaining.");
+      $.getJSON('https://opentdb.com/api.php?amount=' + String(loop) + '&category=18&difficulty=medium&type=multiple', function(data) {
           game.questions = data.results;
           game.displayQuestion();
       });
     },
     displayQuestion: function() {
+      // update DOM
       game.updateScore();
 
       // check if questions answered equals available questions
       // done if true
-      if (game.questionPos + 1 == game.questionAmt) {
+      console.log(game.questionPos + " : " + game.questions.length)
+      if (game.questionPos == game.questions.length) {
         game.completed();
       }
 
+      console.log(game.questionPos + " : " +  game.questions[game.questionPos].question);
       game.answersArr = game.questions[game.questionPos].incorrect_answers;
       game.answersArr.push(game.questions[game.questionPos].correct_answer);
+      game.shuffle(game.answersArr);
       console.log(game.answersArr);
       console.log("Answer: " + game.questions[game.questionPos].correct_answer)
 
-      $(".timer").html(game.timeConverter(game.time / 1000) + " minutes remaining.");
       $(".query").html(game.questions[game.questionPos].question)
       $("#radioStacked1").prop('value', game.answersArr[0]);
       $("#radioStacked2").prop('value', game.answersArr[1]);
@@ -68,20 +66,13 @@ $(document).ready(function() {
       $('.custom-control-description3').html(game.answersArr[2]);
       $('.custom-control-description4').html(game.answersArr[3]);
 
-      console.log(game.questionPos + " : " +  game.questions[game.questionPos].question);
       console.log("Correct: " + game.correct + "  Wrong: " + game.wrong);
+
 
       //setTimeout(game.timesUp(), 30000);
     },
     timesUp: function() {
-      // remove 30 seconds from timer
-      game.time -= 30000;
-      // reset question array
-      game.answersArr = [];
-      // increment question position
-      game.questionPos++;
-      // show next question
-      game.displayQuestion();
+      //TODO update DOM with current time. once timeout is met display .startover
     },
     updateScore: function() {
       // update DOM w/ scores
@@ -105,6 +96,7 @@ $(document).ready(function() {
       $(".game").hide();
       $(".init").hide();
       $(".startover").show();
+      $("#finScore").html("<h3>You got " + game.correct + " of " + (game.questions.length) +  " correct!</h3>");
     },
     timeConverter: function(t) {
 
@@ -123,8 +115,20 @@ $(document).ready(function() {
         }
 
         return minutes + ":" + seconds;
+      },
+      shuffle: function(a) {
+        /**
+        * Shuffles array in place.
+        */
+        var j, x, i;
+        for (i = a.length; i; i--) {
+          j = Math.floor(Math.random() * i);
+          x = a[i - 1];
+          a[i - 1] = a[j];
+          a[j] = x;
+        }
       }
-  }
+    }
 
   if (game.isPlaying == false) {
     $(".game").hide();
@@ -140,17 +144,15 @@ $(document).ready(function() {
     game.start();
   });
   $("#nope").on('click', function() {
-    game.resetGame();
-    $(".container").hide();
-    //window.location.replace("https://google.com");
+    window.location.href = "http://google.com";
   });
   $("#submit").on("click", function() {
     /*
     */
     if ($("input[name='radio-stacked']:checked").val() == game.questions[game.questionPos].correct_answer) {
       game.correct++;
-      $(".game").hide();
-      /*$(".result").fadeToggle('slow/400/fast', function() {
+      /*$(".game").hide();
+      $(".result").fadeToggle('slow/400/fast', function() {
         $("#state").html("<img src='assets/img/correct.png' rel='correct answer'>")
         $(".game").show();
       });*/
