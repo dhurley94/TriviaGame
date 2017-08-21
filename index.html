@@ -13,7 +13,7 @@
 
   <div class="container">
     <div class="jumbotron vertical-center game">
-      <h1 class="display-3">Basic Computer Questions</h1>
+      <h1 id="title" class="display-3">Silicon Savior</h1>
       <p class="lead query"></p>
       <hr class="my-4">
       <form>
@@ -46,8 +46,8 @@
       </form>
       <p class="timer">Timer remaining: <span></span></p>
       <hr class="my-4">
-      <p>Correct: <span id="correct"></span></p>
-      <p>Wrong: <span id="wrong"></span></p>
+      <p style="display: inline">Correct: <span id="correct"></span></p>
+      <p style="display: inline; float: right;">Wrong: <span id="wrong"></span></p>
 
     </div>
 
@@ -79,6 +79,13 @@
       </center>
     </div>
   </div>
+</div>
+
+<!--<div id="result" class="jumbotron vertical-center">
+  <center>
+    <div id="state"></div>
+  </center>
+</div>-->
 
   <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"></script>
