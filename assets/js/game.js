@@ -10,7 +10,6 @@ $(document).ready(function() {
   var game = {
     // declare variables
     "isPlaying": false,
-    "hasQuery": false,
     "questionAmt": 10,
     "questionPos": 0,
     "correct": 0,
@@ -18,7 +17,7 @@ $(document).ready(function() {
     "time": 30000,
     "questions": [],
     "answersArr": [],
-    "timeOutDOM": 29,
+    "timeOutDOM": 30,
     "outOfTime": 0,
 
     // start game
@@ -50,14 +49,14 @@ $(document).ready(function() {
       // update DOM
       game.updateScore();
 
+      if (game.questionPos == game.questions.length) {
+        game.completed();
+      }
       // log postion vs array question length
       console.log(game.questionPos + " : " + game.questions.length)
 
       // check if questions answered equals available questions
       // done if true
-      if (game.questionPos == game.questions.length) {
-        game.completed();
-      }
 
       console.log(game.questionPos + " : " +  game.questions[game.questionPos].question);
       // set incorrect_answers and answer to one array
@@ -93,15 +92,22 @@ $(document).ready(function() {
       clearTimeout(timeoutId);
       // increment failed to answer
       game.wrong++;
+      //game.displayIMG(false);
       // reset DOM timer
-      game.timeOutDOM = 29;
+      game.timeOutDOM = 30;
       game.outOfTime++;
       // reset question array
       game.answersArr = [];
       // increment question position
       game.questionPos++;
       // show next question
-      game.displayQuestion();
+      if (game.questionPos == game.questions.length) {
+        game.completed();
+      } else {
+        game.displayIMG(false);
+        game.displayQuestion();
+      }
+
     },
     updateTimer: function() {
       $(".timer").text(game.timeOutDOM);
@@ -115,7 +121,6 @@ $(document).ready(function() {
     resetGame: function() {
       // reset all variables
       game.isPlaying = false;
-      game.hasQuery = false;
       game.questionAmt = 10;
       game.questionPos = 0;
       game.correct = 0
@@ -129,36 +134,36 @@ $(document).ready(function() {
       clearInterval(intervalId);
       clearTimeout(timeoutId);
       // display startover
+      $(".startover").show();
       $(".game").hide();
       $(".init").hide();
-      $(".startover").show();
       $("#finScore").html("<h3>You got " + game.correct + " of " + (game.questions.length) +  " correct!</h3><p>You ran out of time " + game.outOfTime + " times!</p>");
     },
     shuffle: function(a) {
         /**
         * Shuffles array in place.
         */
-        var j, x, i;
-        for (i = a.length; i; i--) {
-          j = Math.floor(Math.random() * i);
-          x = a[i - 1];
-          a[i - 1] = a[j];
-          a[j] = x;
-        }
+      var j, x, i;
+      for (i = a.length; i; i--) {
+        j = Math.floor(Math.random() * i);
+        x = a[i - 1];
+        a[i - 1] = a[j];
+        a[j] = x;
       }
-  }
-
-  // Check if game is started
-  if (game.isPlaying == false) {
-    $(".game").hide();
-    $(".init").show();
-    $(".startover").hide();
+    },
+    displayIMG: function(res) {
+      if (res) {
+        $(".game").effect("bounce", "slow");
+      } else {
+        $(".game").effect("shake", "slow");
+      }
+    }
   }
 
   $("#start").on('click', function() {
     game.start();
   });
-  $("#startover").on('click', function() {
+  $("#again").on('click', function() {
     game.resetGame();
     game.start();
   });
@@ -166,33 +171,38 @@ $(document).ready(function() {
     $(location).attr('href', 'http://google.com');
   });
   $("#submit").on("click", function() {
-    /*
-    * Clear Timer
-    */
-    clearInterval(intervalId);
-    clearTimeout(timeoutId);
-    // reset DOM timer
-    game.timeOutDOM = 29;
-    // Check input
-    if ($("input[name='radio-stacked']:checked").val() == game.questions[game.questionPos].correct_answer) {
+    if ($("input[name='radio-stacked']:checked").val() === game.questions[game.questionPos].correct_answer) {
       game.correct++;
-      /*$(".game").hide();
-      $(".result").fadeToggle('slow/400/fast', function() {
-        $("#state").html("<img src='assets/img/correct.png' rel='correct answer'>")
-        $(".game").show();
-      });*/
-    } else if ($("input[name='radio-stacked']:checked").val() != game.questions[game.questionPos].correct_answer) {
+      game.displayIMG(true);
+    } else {
       game.wrong++;
-      /*$("#result").fadeToggle('slow/400/fast', function() {
-        $("#state").html("<img src='assets/img/wrong.png' rel='wrong answer'>")
-      });*/
     }
-    // reset question array
-    game.answersArr = [];
-    // increment question position
-    game.questionPos++;
+
     // show next question
-    game.displayQuestion();
+    if (game.questionPos == game.questions.length) {
+      game.completed();
+    } else {
+      /*
+      * Clear Timer
+      */
+      clearInterval(intervalId);
+      clearTimeout(timeoutId);
+      // reset DOM timer
+      game.timeOutDOM = 30;
+      // Check input
+      // reset question array
+      game.answersArr = [];
+      // increment question position
+      game.questionPos++;
+      game.displayQuestion();
+    }
   });
+
+  // Check if game is started
+  if (game.isPlaying == false) {
+    $(".init").show();
+    $(".game").hide();
+    $(".startover").hide();
+  }
 
 });
