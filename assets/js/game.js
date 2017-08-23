@@ -51,39 +51,33 @@ $(document).ready(function() {
 
       if (game.questionPos == game.questions.length) {
         game.completed();
+      } else {
+        // log postion vs array question length
+        console.log(game.questionPos + " : " + game.questions.length)
+
+        console.log(game.questionPos + " : " +  game.questions[game.questionPos].question);
+        // set incorrect_answers and answer to one array
+        game.answersArr = game.questions[game.questionPos].incorrect_answers;
+        game.answersArr.push(game.questions[game.questionPos].correct_answer);
+        // shuffle order
+        game.shuffle(game.answersArr);
+
+        console.log(game.answersArr);
+        console.log("Answer: " + game.questions[game.questionPos].correct_answer)
+
+        // update DOM
+        $(".remain").text((game.questionPos + 1) + " / " + game.questionAmt);
+        $(".query").html(game.questions[game.questionPos].question)
+        for (var i = 1; i <= 4; i++) {
+          $("#radioStacked" + i).prop('value', game.answersArr[i-1]);
+          $(".custom-control-description" + i).html(game.answersArr[i-1]);
+        }
+
+        console.log("Correct: " + game.correct + "  Wrong: " + game.wrong);
+
+        intervalId = setInterval(game.updateTimer, 1000);
+        timeoutId = setTimeout(game.timesUp, 29000);
       }
-      // log postion vs array question length
-      console.log(game.questionPos + " : " + game.questions.length)
-
-      // check if questions answered equals available questions
-      // done if true
-
-      console.log(game.questionPos + " : " +  game.questions[game.questionPos].question);
-      // set incorrect_answers and answer to one array
-      game.answersArr = game.questions[game.questionPos].incorrect_answers;
-      game.answersArr.push(game.questions[game.questionPos].correct_answer);
-      // shuffle order
-      game.shuffle(game.answersArr);
-
-      console.log(game.answersArr);
-      console.log("Answer: " + game.questions[game.questionPos].correct_answer)
-
-      // update DOM
-      $(".remain").text((game.questionPos + 1) + " / " + game.questionAmt);
-      $(".query").html(game.questions[game.questionPos].question)
-      $("#radioStacked1").prop('value', game.answersArr[0]);
-      $("#radioStacked2").prop('value', game.answersArr[1]);
-      $("#radioStacked3").prop('value', game.answersArr[2]);
-      $("#radioStacked4").prop('value', game.answersArr[3]);
-      $('.custom-control-description1').html(game.answersArr[0]);
-      $('.custom-control-description2').html(game.answersArr[1]);
-      $('.custom-control-description3').html(game.answersArr[2]);
-      $('.custom-control-description4').html(game.answersArr[3]);
-
-      console.log("Correct: " + game.correct + "  Wrong: " + game.wrong);
-
-      intervalId = setInterval(game.updateTimer, 1000);
-      timeoutId = setTimeout(game.timesUp, 30000);
     },
     timesUp: function() {
       console.log("Ranout of time!");
@@ -104,7 +98,7 @@ $(document).ready(function() {
       if (game.questionPos == game.questions.length) {
         game.completed();
       } else {
-        game.displayIMG(false);
+        //game.displayIMG(false);
         game.displayQuestion();
       }
 
@@ -172,9 +166,10 @@ $(document).ready(function() {
   });
   $("#submit").on("click", function() {
     if ($("input[name='radio-stacked']:checked").val() === game.questions[game.questionPos].correct_answer) {
+      //game.displayIMG(true);
       game.correct++;
-      game.displayIMG(true);
     } else {
+      //game.displayIMG(false);
       game.wrong++;
     }
 
