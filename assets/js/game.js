@@ -162,6 +162,7 @@ $(document).ready(function() {
     game.start();
   });
   $("#nope").on('click', function() {
+    game.resetGame();
     $(location).attr('href', 'http://google.com');
   });
   $("#submit").on("click", function() {
